@@ -1,3 +1,16 @@
+# Preface
+
+Chef as an Configuration Management Framework seems to be an overkill for small sized projects at first glance.
+This is definitely true if we consider only projects as easy to install as nodejs apps.
+However, production level applications with databases etc. need even then some effort which we have been addressing
+using scripts or manually.
+
+I see some immediate benefits for us using such a technology.
+The installation of a single server gets managed and documented, and becomes reproducible and shareable.
+Adopting virtualization opens the opportunity to roll out deployments on staging machines first. We do not need extra hardware for that - everybody can do that locally. The best of all - everybody can.
+Being able to emulate multi-node infrastructure, we can play with scaling and backup strategies.
+
+
 # Vagrant
 
 If you don't know *Vagrant*: it's all about creating Virtual Machines (VirtualBox, VMWare, etc.) from the command line.
@@ -62,6 +75,15 @@ $ sudo gem install librarian-chef
 
 You will see later how this is used.
 
+
+    Note: Unfortunately, the librarian requires Ruby >= 1.9.2 which is not installed on OSX by default
+    (at least on Mountain Lion). There are several options to get Ruby 1.9.3.
+    For me the easiest way was usìng `rvm` which is bundled in `RailsInstaller` (full Rails toolchain),
+    or can be brewn with `homebrew`.
+
+```
+$ rvm install 1.9.3
+```
 
 ## Keys for Server Administration and Client Registration
 
