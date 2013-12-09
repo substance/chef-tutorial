@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+CLIENT = "example1.substance.io"
+CLIENT_IP = "192.168.50.10"
+SERVER = "chefserver.substance.io"
+SERVER_IP = "192.168.50.100"
+
+$provision =<<PROVISION
+# TODO: this should be done smarter
+if [ ! -f .is_configured ]; then
+  echo "Registering hostname $1."
+  hostname "$1"
+  echo "$1" | tee /etc/hostname
+  echo -e "127.0.0.2 `hostname` `hostname -s`" | tee -a /etc/hosts
+  # Add an alias for the server
+  echo -e "$3 $2" | tee -a /etc/hosts
+  touch .is_configured
+fi
+PROVISION
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "precise64"
+  config.vm.network "private_network", ip: CLIENT_IP
+
+  config.vm.provision "shell" do |s|
+    s.inline = $provision
+    INSTALL_ARGS = CLIENT + " " + SERVER + " " + SERVER_IP
+    s.args   = INSTALL_ARGS
+  end
+
+  config.vm.provision :chef_client do |chef|
+    chef.chef_server_url = "https://chefserver.substance.io"
+    chef.validation_key_path = "../chef-repo/.chef/chef-validator.pem"
+    chef.validation_client_name = "chef-validator"
+    chef.node_name = "example1"
+  end
+
+end
