@@ -1,0 +1,10 @@
+SITE
+  remote: http://community.opscode.com/api/v1
+  specs:
+    apt (2.3.0)
+    omnibus_updater (0.2.4)
+
+DEPENDENCIES
+  apt (>= 0)
+  omnibus_updater (>= 0)
+

@@ -1,3 +1,5 @@
 .vagrant
 *.deb
 *.pem
+/chef-repo/cookbooks
+/chef-repo/tmp
