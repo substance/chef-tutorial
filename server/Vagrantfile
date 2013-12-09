@@ -1,0 +1,49 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+SERVER = "chefserver.example.com"
+SERVER_IP = "192.168.50.100"
+
+$shell_provision=<<SCRIPT
+
+if [ ! -f /usr/bin/chef-server-ctl ]; then
+
+  # Change the host name
+  # Note: this must be done before configuring Chef Server
+  echo "Registering hostname $1."
+  hostname "$1"
+  echo "$1" | tee /etc/hostname
+  echo -e "127.0.0.2 `hostname` `hostname -s`" | tee -a /etc/hosts
+
+  echo "Chef Server is missing."
+  if [ ! -f /vagrant/chef-server_11.0.10-1.ubuntu.12.04_amd64.deb ]; then
+    echo "Downloading Chef Server 11.0.10 installer."
+    wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chef-server_11.0.10-1.ubuntu.12.04_amd64.deb
+    mv chef-server_11.0.10-1.ubuntu.12.04_amd64.deb /vagrant/
+  fi
+
+  echo "Installing Chef Server 11.0.10."
+  dpkg -i /vagrant/chef-server_11.0.10-1.ubuntu.12.04_amd64.deb
+
+  echo "Configuring Chef Server 11.0.10."
+  chef-server-ctl reconfigure
+fi
+# Always run `apt-get update` when running `vagrant provision`
+apt-get update
+SCRIPT
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "precise64"
+
+  config.vm.provision "shell" do |s|
+    s.inline = $shell_provision
+    s.args   = SERVER
+  end
+
+  config.vm.network "private_network", ip: SERVER_IP
+
+end
