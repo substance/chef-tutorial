@@ -31,10 +31,10 @@ everytime when you just want to reset it. See https://github.com/dergachev/vagra
 $ vagrant plugin install vagrant-vbox-snapshot
 ```
 
-# Cache Ubuntu 12.04 64bit Box
+## Caching
 
-As you might use the very same virtual machine for all your clients and servers
-it is useful to have the Vagrant box on your local disk.
+As we will use one common base image for all client and server virtual machines
+it is useful to fetch that Vagrant box onto your local disk.
 
 ```
 $ vagrant box add precise64 http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
