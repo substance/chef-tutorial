@@ -113,3 +113,34 @@ You can then return to that version using:
 ```
 /server $ vagrant snapshot go vanilla
 ```
+
+# Summary
+
+Now you should have...
+
+- a Chef Server running on https://192.168.50.100 (check in web-browser)
+
+- an alias `chefserver.substance.io` resolving to that local ip.
+
+- a snapshot of the current server image
+
+```
+/server $ vagrant snapshot list
+Listing snapshots for 'default':
+   Name: vanilla (UUID: 892bb7b3-8463-4f44-a008-960c2e1bbb1e) *
+```
+
+- private keys for Chef `admin` and `chef-validator`
+
+```
+$ ls chef-repo/.chef/
+admin.pem   chef-validator.pem  knife.rb
+```
+
+- librarian-chef installed
+
+```
+$ librarian-chef version
+librarian-0.1.1
+librarian-chef-0.0.2
+```
