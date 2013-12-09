@@ -7,7 +7,7 @@ See [](http://www.vagrantup.com/).
 Download the installer for your system from [](http://downloads.vagrantup.com).
 When writing this tutorial it was of version `1.3.5`.
 
-    Note: to install the `.deb` file under Ubuntu you can run `sudo dpkg -u <package>.deb`
+    Note: to install the `.deb` file under Ubuntu you can run `sudo dpkg -i <package>.deb`
 
 ## Snapshot plugin
 
@@ -52,6 +52,17 @@ PING chefserver.substance.io (192.168.50.100) 56(84) bytes of data.
 64 bytes from chefserver.substance.io (192.168.50.100): icmp_req=2 ttl=64 time=0.573 ms
 ```
 
+## Librarian
+
+A useful tool to manage external/community cookbooks:
+
+```
+$ sudo gem install librarian-chef
+```
+
+You will see later how this is used.
+
+
 ## Keys for Server Administration and Client Registration
 
     TODO: maybe I could add some screenshots
@@ -73,4 +84,10 @@ At this point it makes sense to create a snapshot of the server.
 
 ```
 /server $ vagrant snapshot take vanilla
+```
+
+You can then return to that version using:
+
+```
+/server $ vagrant snapshot go vanilla
 ```
