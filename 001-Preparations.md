@@ -1,10 +1,10 @@
 # Vagrant
 
 If you don't know *Vagrant*: it's all about creating Virtual Machines (VirtualBox, VMWare, etc.) from the command line.
-See [](http://www.vagrantup.com/).
+See http://www.vagrantup.com.
 
 
-Download the installer for your system from [](http://downloads.vagrantup.com).
+Download the installer for your system from http://downloads.vagrantup.com.
 When writing this tutorial it was of version `1.3.5`.
 
     Note: to install the `.deb` file under Ubuntu you can run `sudo dpkg -i <package>.deb`
@@ -12,7 +12,7 @@ When writing this tutorial it was of version `1.3.5`.
 ## Snapshot plugin
 
 This plugin is very useful to create certain recovery points. So you don't need to create a virtual machine from scratch
-everytime when you just want to reset it. See [](https://github.com/dergachev/vagrant-vbox-snapshot).
+everytime when you just want to reset it. See https://github.com/dergachev/vagrant-vbox-snapshot.
 
 ```
 $ vagrant plugin install vagrant-vbox-snapshot
