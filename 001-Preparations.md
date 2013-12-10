@@ -33,11 +33,12 @@ $ vagrant plugin install vagrant-vbox-snapshot
 
 ## Caching
 
-As we will use one common base image for all client and server virtual machines
+As we will use one common base images for clients and the server virtual machines
 it is useful to fetch that Vagrant box onto your local disk.
 
 ```
 $ vagrant box add precise64 http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
+$ vagrant box add precise64_chef "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.4.4.box"
 ```
 
 # Chef Server
