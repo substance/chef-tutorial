@@ -1,0 +1,16 @@
+{
+  "name": "example2",
+  "chef_environment": "_default",
+  "run_list": [
+    "recipe[apt]",
+    "recipe[omnibus_updater]",
+    "recipe[passenger_apache2]",
+    "recipe[git]",
+    "recipe[nodejs]",
+    "recipe[rails-example]"
+  ],
+  "normal": {
+    "tags": [
+    ]
+  }
+}
