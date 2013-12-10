@@ -4,7 +4,8 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
-CLIENT = "example1.substance.io"
+NODE_NAME = "nodejs-example"
+CLIENT = "nodejs-example.substance.io"
 CLIENT_IP = "192.168.50.10"
 SERVER = "chefserver.substance.io"
 SERVER_IP = "192.168.50.100"
@@ -38,7 +39,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.chef_server_url = "https://chefserver.substance.io"
     chef.validation_key_path = "../chef-repo/.chef/chef-validator.pem"
     chef.validation_client_name = "chef-validator"
-    chef.node_name = "example1"
+    chef.node_name = NODE_NAME
   end
 
 end

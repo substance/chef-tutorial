@@ -1,18 +1,13 @@
 # Client Machine
 
-You find everything prepared in `./nodejs-example`.
+You find everything prepared in `./nodejs-client`.
 
 ```
-$ cd nodejs-example
-nodejs-example $ vagrant up
+$ cd nodejs-client
+nodejs-client $ vagrant up
 ```
 
 After that you should have a client running on `192.168.50.10`
-If you want you can create an alias in `/etc/hosts`
-
-```
-192.168.50.10 example1.substance.io example1
-```
 
     > Note: this vagrant is configured to register itself to the server.
     > For that to work the server must be running.
@@ -22,8 +17,8 @@ If you want you can create an alias in `/etc/hosts`
 If you want, now is a good moment to take a snapshot.
 
 ```
-chef-repo $ cd ../nodejs-example
-nodejs-example $ vagrant snapshot take vanilla
+chef-repo $ cd ../nodejs-client
+nodejs-client $ vagrant snapshot take vanilla
 ```
 
 # Chef Basics
@@ -75,14 +70,14 @@ executed and used for managing the state of the client machine.
 To edit this list:
 
 ```
-chef-repo $ knife node edit example1
+chef-repo $ knife node edit nodejs-example
 ```
 
 This will open up `nano` to edit a json file.
 
 ```
 {
-  "name": "example1",
+  "name": "nodejs-example",
   "chef_environment": "_default",
   "normal": {
     "tags": [
@@ -113,14 +108,14 @@ There are two ways to update the client machine: calling `chef-client` on the ma
 or using the installed vagrant provisioning mechanism.
 
 ```
-nodejs-example $ vagrant ssh
-[example1] ~ $ sudo chef-client
+nodejs-client $ vagrant ssh
+[nodejs-client] ~ $ sudo chef-client
 ```
 
 or:
 
 ```
-nodejs-example $ vagrant provision
+nodejs-client $ vagrant provision
 ```
 
 After that you should see `chef-client` installing the cookbooks and updating `apt`.
@@ -185,7 +180,7 @@ cookbook 'application_nodejs',
 Create a new cookbook using
 
 ```
-chef-repo $ knife cookbook create example1 -o site-cookbooks
+chef-repo $ knife cookbook create nodejs-example -o site-cookbooks
 ```
 
 As we use `librarian` personal cookbooks and external ones are kept in different folders.
@@ -193,7 +188,7 @@ Thus we have to specify the option `-o site-cookbooks`
 
 ### Edit the Recipe
 
-Open `chef-repo/site-cookbooks/example1/recipes/default.rb` and add the following block:
+Open `chef-repo/site-cookbooks/nodejs-example/recipes/default.rb` and add the following block:
 
 ```
 application "hello-world" do
@@ -219,7 +214,7 @@ application with `upstart`.
 Add the cookbook to the nodes run-list:
 
 ```
-chef-repos/ $ knife node edit example1
+chef-repos/ $ knife node edit nodejs-example
 ```
 
 ```
@@ -227,7 +222,7 @@ chef-repos/ $ knife node edit example1
   "run_list": [
     "recipe[apt]",
     "recipe[omnibus_updater]",
-    "recipe[example1]"
+    "recipe[nodejs-example]"
   ]
   ...
 ```
@@ -235,7 +230,7 @@ chef-repos/ $ knife node edit example1
 ### Update the client:
 
 ```
-nodejs-example/ $ vagrant provision
+nodejs-client/ $ vagrant provision
 ```
 
 ### The Moment of Truth
@@ -252,13 +247,13 @@ We definitely want to have this under version control.
 
 ```
 chef-repo $ mkdir nodes
-chef-repo $ knife node show example1 -Fj > nodes/example1.json
+chef-repo $ knife node show nodejs-example -Fj > nodes/nodejs-example.json
 ```
 
 In future we will manage nodes by editing such files and then do
 
 ```
-chef-repo $ knife node from file nodes/example1
+chef-repo $ knife node from file nodes/nodejs-example
 ```
 
 # Summary
@@ -266,7 +261,7 @@ chef-repo $ knife node from file nodes/example1
 - We created a Client Virtual Machine using Vagrant.
 
 ```
-nodejs-example $ vagrant up
+nodejs-client $ vagrant up
 ```
 
 - We manage foreign cookbooks using `librarian-chef` by editing `chef-repo/Cheffile`.
@@ -324,7 +319,7 @@ chef-repo $ knife node from file nodes/<NODE-NAME>.json
 - The client machine is updated using
 
 ```
-nodejs-example $ vagrant provision
+nodejs-client $ vagrant provision
 ```
 
 
