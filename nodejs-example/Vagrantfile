@@ -8,6 +8,7 @@ CLIENT = "example1.substance.io"
 CLIENT_IP = "192.168.50.10"
 SERVER = "chefserver.substance.io"
 SERVER_IP = "192.168.50.100"
+INSTALL_ARGS = CLIENT + " " + SERVER + " " + SERVER_IP
 
 $provision =<<PROVISION
 # TODO: this should be done smarter
@@ -24,12 +25,11 @@ PROVISION
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "precise64"
+  config.vm.box = "precise64_chef"
   config.vm.network "private_network", ip: CLIENT_IP
 
   config.vm.provision "shell" do |s|
     s.inline = $provision
-    INSTALL_ARGS = CLIENT + " " + SERVER + " " + SERVER_IP
     s.args   = INSTALL_ARGS
   end
 

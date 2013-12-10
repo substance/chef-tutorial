@@ -4,7 +4,7 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
-SERVER = "chefserver.example.com"
+SERVER = "chefserver.substance.io"
 SERVER_IP = "192.168.50.100"
 
 $shell_provision=<<SCRIPT
@@ -18,7 +18,6 @@ if [ ! -f /usr/bin/chef-server-ctl ]; then
   echo "$1" | tee /etc/hostname
   echo -e "127.0.0.2 `hostname` `hostname -s`" | tee -a /etc/hosts
 
-  echo "Chef Server is missing."
   if [ ! -f /vagrant/chef-server_11.0.10-1.ubuntu.12.04_amd64.deb ]; then
     echo "Downloading Chef Server 11.0.10 installer."
     wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chef-server_11.0.10-1.ubuntu.12.04_amd64.deb
@@ -31,8 +30,10 @@ if [ ! -f /usr/bin/chef-server-ctl ]; then
   echo "Configuring Chef Server 11.0.10."
   chef-server-ctl reconfigure
 fi
+
 # Always run `apt-get update` when running `vagrant provision`
 apt-get update
+
 SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -45,5 +46,4 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.network "private_network", ip: SERVER_IP
-
 end
