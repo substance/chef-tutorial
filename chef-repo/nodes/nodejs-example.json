@@ -1,10 +1,10 @@
 {
-  "name": "example1",
+  "name": "nodejs-example",
   "chef_environment": "_default",
   "run_list": [
     "recipe[apt]",
     "recipe[omnibus_updater]",
-    "recipe[example1]"
+    "recipe[nodejs-example]"
   ],
   "normal": {
     "tags": [

@@ -1,4 +1,4 @@
-name             'example1'
+name             'nodejs-example'
 maintainer       'Oliver Buchtala'
 maintainer_email 'oliver.buchtala@gmail.com'
 license          'All rights reserved'

@@ -1,5 +1,5 @@
 {
-  "name": "example2",
+  "name": "rails-example",
   "chef_environment": "_default",
   "run_list": [
     "recipe[apt]",
