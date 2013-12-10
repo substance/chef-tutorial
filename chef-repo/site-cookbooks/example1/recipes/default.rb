@@ -1,12 +1,3 @@
-#
-# Cookbook Name:: app_nodejs_helloworld
-# Recipe:: default
-#
-# Copyright 2013, YOUR_COMPANY_NAME
-#
-# All rights reserved - Do Not Redistribute
-#
-
 application "hello-world" do
   path "/var/www/nodejs/hello-world"
   owner "www-data"
