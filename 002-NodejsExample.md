@@ -3,8 +3,8 @@
 You find everything prepared in `./nodejs-example`.
 
 ```
-/$ cd nodejs-example
-nodejs-example/$ vagrant up
+$ cd nodejs-example
+nodejs-example $ vagrant up
 ```
 
 After that you should have a client running on `192.168.50.10`
@@ -14,36 +14,16 @@ If you want you can create an alias in `/etc/hosts`
 192.168.50.10 example1.substance.io example1
 ```
 
-# Registration
-
-## Quick Start
-
-```
-/nodejs-example $ ./register.sh
-```
-
-## Step by step
-
-Remove an old node from the server. You can use the WebInterface or run (from `chef-repo` folder):
-
-```
-/chef-repo $ knife delete node example1 2> /dev/null
-/chef-repo $knife delete client example1 2> /dev/null
-```
-
-Bootstrap the client machine
-
-```
-/chef-repo $ knife bootstrap 192.168.50.10 --sudo -x vagrant -P vagrant -N "example1"
-```
+    > Note: this vagrant is configured to register itself to the server.
+    > For that to work the server must be running.
 
 ## Snapshot
 
-If you want to play around now (i.e., after registration) is a good moment to take a snapshot.
+If you want, now is a good moment to take a snapshot.
 
 ```
-/chef-repo $ cd ../nodejs-example
-/nodejs-example $ vagrant snapshot take vanilla
+chef-repo $ cd ../nodejs-example
+nodejs-example $ vagrant snapshot take vanilla
 ```
 
 # Chef Basics
@@ -67,7 +47,7 @@ cookbook 'omnibus_updater'
 ## Run the librarian
 
 ```
-/chef-repo $ librarian-chef install
+chef-repo $ librarian-chef install
 ```
 
 After that you find the two cookbooks in `chef-repo/cookbooks`.
@@ -84,10 +64,10 @@ attributes.
 At the moment all cookbooks are stored only locally and need to be transferred to the server.
 
 ```
-/chef-repo $ knife cookbook upload --all
+chef-repo $ knife cookbook upload --all
 ```
 
-## Edit RunList
+## Edit Run List
 
 Each node has a specific run-list that determines which cookbooks or more precisely which recipes are
 executed and used for managing the state of the client machine.
@@ -95,7 +75,7 @@ executed and used for managing the state of the client machine.
 To edit this list:
 
 ```
-/chef-repo $ knife node edit example1
+chef-repo $ knife node edit example1
 ```
 
 This will open up `nano` to edit a json file.
@@ -126,21 +106,23 @@ Change `run_list` and save.
 
 ## Update client
 
-After each change to a cookbook or node properties (e.g., a run list) the client
-needs to be updated. There are two ways to update the client machine: calling `chef-client` on the machine
+After a change to a cookbook or node properties (e.g., a run list) to take an effect the client
+needs to be updated.
+
+There are two ways to update the client machine: calling `chef-client` on the machine
 or using the installed vagrant provisioning mechanism.
 
 On the client:
 
 ```
-/nodejs-example $ vagrant ssh
-example1: ~/ $ sudo chef-client
+nodejs-example $ vagrant ssh
+[example1] ~ $ sudo chef-client
 ```
 
 Vagrant provision:
 
 ```
-/nodejs-example $ vagrant provision
+nodejs-example $ vagrant provision
 ```
 
 After that you should see `chef-client` installing the cookbooks and updating `apt`.
@@ -193,9 +175,9 @@ cookbook 'application_nodejs',
   :ref => '2.0.0'
 ```
 
->  Note: A first problem occurred here. 'application_nodejs' can not be used without specifying the repository.
->        A second problem occurred with the latest version of cookbook `application` (>= 4.0.0).
->        Instead one has to stick to version 3.0.0.
+>  Note: A first problem occurred here, 'application_nodejs' can not be used without specifying the repository.
+>        Another problem was, the latest version of cookbook `application` (>= 4.0.0) seems incompatible with
+>        `application_nodejs`, so we need to stick to version 3.0.0.
 >        See Troubleshooting below.
 
 ## Custom Cookbook
@@ -249,6 +231,88 @@ Open in your browser: `http://192.168.50.10:3000/`
 
 You should see `Hello World`.
 
+
+## Persist Node Configuration
+
+At this moment the node's configuration is only stored on the server.
+We definitely want to have this under version control.
+
+```
+chef-repo $ mkdir nodes
+chef-repo $ knife node show example1 -Fj > nodes/example1.json
+```
+
+In future we will manage nodes by editing such files and then do
+
+```
+chef-repo $ knife node from file nodes/example1
+```
+
+# Summary
+
+- We created a Client Virtual Machine using Vagrant.
+
+```
+nodejs-example $ vagrant up
+```
+
+- We manage foreign cookbooks using `librarian-chef` by editing `chef-repo/Cheffile`.
+
+- To download all external cookbooks we have used
+
+```
+chef-repo $ librarian-chef install [--clean]
+```
+
+    Note: sometimes it is necessary to use the `--clean` option, e.g., when we bump a cookbook
+    to a specific version `Cheffile.lock` gets in an inconsistent state.
+
+- To install cookbooks onto the server we have used
+
+```
+chef-repo $ knife cookbook upload --all
+```
+
+    Note: you can remove uploaded cookbooks from the server using `knife cookbook delete`, using the web-interface,
+    or `knife cookbook bulk delete "<regexp>"`. E.g., `knife cookbook bulk delete ".*"` removes all cookbooks.
+
+
+- A new cookbook is created using
+
+```
+chef-repo $ knife cookbook create <COOKBOOK-NAME> -o site-cookbooks/
+```
+
+    Note: of course this is sugar and you can just create a cookbook manually if you know the directory layout.
+    A minimal cookbook consists of `README.md`, `metadata.rb`, and `recipes/default.rb`.
+
+- Cookbooks/Recipes are assigned to a Node via a *Run List*. The proper way to do this is to edit a node JSON file.
+
+- To create a Node configuration file you can
+
+```
+chef-repo $ knife node show <NODE-NAME> -Fj > nodes/<NODE-NAME>.json
+```
+
+- Adding a Recipe to a run list looks like:
+
+```
+  "run_list": [
+    "recipe[apt]"
+  ]
+```
+
+- To store a Node configuration on the server you run:
+
+```
+chef-repo $ knife node from file nodes/<NODE-NAME>.json
+```
+
+- The client machine is updated using
+
+```
+nodejs-example $ vagrant provision
+```
 
 
 # Troubleshooting
