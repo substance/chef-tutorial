@@ -1,6 +1,6 @@
-name             'app_nodejs_helloworld'
-maintainer       'YOUR_COMPANY_NAME'
-maintainer_email 'YOUR_EMAIL'
+name             'example1'
+maintainer       'Oliver Buchtala'
+maintainer_email 'oliver.buchtala@gmail.com'
 license          'All rights reserved'
 description      'Installs/Configures app_nodejs_helloworld'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
