@@ -387,4 +387,6 @@ To resolve this use application as of version `3.0.0`.
 
 - When changing versions in `Cheffile` the Librarian does not proceed due to the contradictory versions in
   `Cheffile.lock`. Can the install be forced?
-- Recreating a client maching from scratch
+
+- `application_nodejs` always builds from scratch which takes a long time. We could maybe fork that cookbook and
+  make it use the package install.
