@@ -1,0 +1,17 @@
+{
+  "name": "example1",
+  "chef_environment": "_default",
+  "run_list": [
+    "recipe[apt]",
+    "recipe[omnibus_updater]",
+    "recipe[example1]"
+  ],
+  "normal": {
+    "tags": [
+
+    ],
+    "omnibus_updater": {
+      "full_url": "http://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chef_11.8.2-1.ubuntu.12.04_amd64.deb"
+    }
+  }
+}
