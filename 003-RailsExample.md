@@ -18,15 +18,17 @@ Intentionally I will start with an incomplete solution and show errors and solut
 Add this to `chef-repo/Cheffile`:
 
 ```
+cookbook 'git'
 cookbook 'nodejs'
 cookbook 'application_ruby'
 ```
 
-And run the Librarian:
+and run the Librarian:
 
 ```
 chef-repo $ librarian-chef install
 ```
+
 
 ## Custom Cookbook
 
@@ -65,11 +67,12 @@ application "rails-example" do
 
 Similar to the NodeJS Example we keep the application source code in an extra repository.
 Again we make use of the `application` resource.
-This time there are other sub-resources: `rails` provided by `application_ruby` and
-`passenger_apache2` provided by `passenger_apache2`.
+This time there are other sub-resources: `rails` and `passenger_apache2`.
 `rails` takes care of the Rails specific deployment, e.g., bundling.
 `passenger_apache2` pulls in `apache2` and installs the passenger module.
-end
+
+    Note: `rails` is a resource defined in the `application_ruby` cookbook.
+
 
 ### Edit attributes
 
@@ -79,6 +82,9 @@ Open the file `chef-repo/site-cookbooks/rails-example/attributes/default.rb`:
 default['nodejs']['install_method'] = 'package'
 default['nodejs']['version'] = '0.10.15'
 ```
+
+    Note: these attributes specify that nodejs should be installed via package manager instead
+    of building from source which takes rather long.
 
 ### Upload Cookbooks
 
@@ -113,10 +119,17 @@ And write the node onto the server:
 chef-repo $ knife node from file nodes/example2.json
 ```
 
-## Fixing
+## Failing
 
-At this moment you could try to update the client the first time.
-However there are some problems to be solved.
+Update the client:
+
+```
+rails-example $ vagrant provision
+```
+
+You will find this failing. Let's fix it
+
+## Fixing
 
 ### Rails config template
 
@@ -149,6 +162,12 @@ content:
 </VirtualHost>
 ```
 
+
+Upload the cookbook and update the client.
+
+When you open the browser at `192.168.50.20` you should see now a Phusion Passenger message now.
+Good -- it is the passenger. Bad -- it is an error.
+
 ### No Bundle
 
 We have to set the property `bundler` of resource `rails` to `true`.
@@ -180,11 +199,13 @@ rails-example $ vagrant provision
 
 you should see the bundler in action.
 
+The browser will still show us a Passenger error message - though, a new one.
+
 
 ### Database.yml invalid
 
 Even though we provided a `database.yml` with the application it gets overwritten by default by the `rails` recipe.
-Instead it expects a template `database.yml.erb` to be provided.
+Instead `rails` expects a template `database.yml.erb` to be provided.
 
 Create a file `chef-repo/site-cookbooks/rails-example/templates/default/database.yml.erb` with the following content:
 
@@ -206,7 +227,7 @@ production:
   timeout: 5000
 ```
 
-Additionally, the template must be declared in the `rails` resource.
+And, the template must be declared in the `rails` resource.
 Open the default recipe of `rails-example` and edit the `rails` block:
 
 ```
