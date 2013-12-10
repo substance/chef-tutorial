@@ -12,14 +12,15 @@ INSTALL_ARGS = CLIENT + " " + SERVER + " " + SERVER_IP
 
 $provision =<<PROVISION
 # TODO: this should be done smarter
-if [ ! -f .is_configured ]; then
+if [ ! -f /root/.is_configured ]; then
   echo "Registering hostname $1."
   hostname "$1"
   echo "$1" | tee /etc/hostname
   echo -e "127.0.0.2 `hostname` `hostname -s`" | tee -a /etc/hosts
+
   # Add an alias for the server
   echo -e "$3 $2" | tee -a /etc/hosts
-  touch .is_configured
+  touch /root/.is_configured
 fi
 PROVISION
 
