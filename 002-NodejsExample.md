@@ -185,7 +185,7 @@ cookbook 'application_nodejs',
 Create a new cookbook using
 
 ```
-knife cookbook create example1 -o site-cookbooks
+chef-repo $ knife cookbook create example1 -o site-cookbooks
 ```
 
 As we use `librarian` personal cookbooks and external ones are kept in different folders.
@@ -350,7 +350,7 @@ The following `Cheffile` entry:
 cookbook 'application_nodejs'
 ```
 
-lead to this error:
+leads to this error:
 
 ```
 /chef-repo $ librarian-chef install
@@ -361,68 +361,7 @@ lead to this error:
   from /usr/lib/ruby/1.9.1/fileutils.rb:1392:in `remove'
   from /usr/lib/ruby/1.9.1/fileutils.rb:770:in `block in remove_entry'
   from /usr/lib/ruby/1.9.1/fileutils.rb:1444:in `block (2 levels) in postorder_traverse'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:1444:in `block (2 levels) in postorder_traverse'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:1448:in `postorder_traverse'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:1443:in `block in postorder_traverse'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:1442:in `each'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:1442:in `postorder_traverse'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:1443:in `block in postorder_traverse'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:1442:in `each'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:1442:in `postorder_traverse'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:768:in `remove_entry'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:626:in `block in rm_r'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:622:in `each'
-  from /usr/lib/ruby/1.9.1/fileutils.rb:622:in `rm_r'
-  from /usr/lib/ruby/1.9.1/pathname.rb:523:in `rmtree'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/source/site.rb:314:in `ensure in unpack_package!'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/source/site.rb:314:in `unpack_package!'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/source/site.rb:224:in `cache_version_uri_unpacked!'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/source/site.rb:93:in `block in version_uri_manifest'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/source/site.rb:378:in `memo'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/source/site.rb:92:in `version_uri_manifest'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/source/site.rb:88:in `version_manifest'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/source/site.rb:54:in `version_dependencies'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/source/site.rb:459:in `fetch_dependencies'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/manifest.rb:121:in `fetch_dependencies!'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/manifest.rb:113:in `fetched_dependencies'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/manifest.rb:77:in `dependencies'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:131:in `sourced_dependencies_for_manifest'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:60:in `block in recursive_resolve'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:143:in `block (3 levels) in resolving_dependency_map_find_manifests'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:176:in `block in scope_checking_manifest'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:208:in `scope'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:175:in `scope_checking_manifest'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:142:in `block (2 levels) in resolving_dependency_map_find_manifests'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:196:in `block in map_find'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:195:in `each'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:195:in `map_find'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:141:in `block in resolving_dependency_map_find_manifests'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:154:in `block (2 levels) in scope_resolving_dependency'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:168:in `block in scope_checking_manifests'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:208:in `scope'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:167:in `scope_checking_manifests'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:153:in `block in scope_resolving_dependency'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:208:in `scope'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:152:in `scope_resolving_dependency'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:140:in `resolving_dependency_map_find_manifests'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:56:in `recursive_resolve'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver/implementation.rb:32:in `resolve'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/resolver.rb:16:in `resolve'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/action/resolve.rb:26:in `run'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/cli.rb:169:in `resolve!'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/lib/librarian/chef/cli.rb:41:in `install'
-  from /var/lib/gems/1.9.1/gems/thor-0.18.1/lib/thor/command.rb:27:in `run'
-  from /var/lib/gems/1.9.1/gems/thor-0.18.1/lib/thor/invocation.rb:120:in `invoke_command'
-  from /var/lib/gems/1.9.1/gems/thor-0.18.1/lib/thor.rb:363:in `dispatch'
-  from /var/lib/gems/1.9.1/gems/thor-0.18.1/lib/thor/base.rb:439:in `start'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/cli.rb:26:in `block (2 levels) in bin!'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/cli.rb:31:in `returning_status'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/cli.rb:26:in `block in bin!'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/cli.rb:47:in `with_environment'
-  from /var/lib/gems/1.9.1/gems/librarian-0.1.1/lib/librarian/cli.rb:26:in `bin!'
-  from /var/lib/gems/1.9.1/gems/librarian-chef-0.0.2/bin/librarian-chef:7:in `<top (required)>'
-  from /usr/local/bin/librarian-chef:19:in `load'
-  from /usr/local/bin/librarian-chef:19:in `<main>'
+  ...
 ```
 
 To resolve this use the repository notation:
