@@ -106,20 +106,18 @@ Change `run_list` and save.
 
 ## Update client
 
-After a change to a cookbook or node properties (e.g., a run list) to take an effect the client
-needs to be updated.
+After a change to a cookbook or node properties (e.g., a run list) the client
+needs to be updated to have an effect.
 
 There are two ways to update the client machine: calling `chef-client` on the machine
 or using the installed vagrant provisioning mechanism.
-
-On the client:
 
 ```
 nodejs-example $ vagrant ssh
 [example1] ~ $ sudo chef-client
 ```
 
-Vagrant provision:
+or:
 
 ```
 nodejs-example $ vagrant provision
@@ -130,8 +128,7 @@ After that you should see `chef-client` installing the cookbooks and updating `a
 
 # NodeJS Example
 
-Let's take a look at a first example: a NodeJS application -  a simple HelloWorld express application.
-
+Let's take a look at a first example for NodeJS: a simple HelloWorld express application.
 
 `app.js`:
 
@@ -162,6 +159,9 @@ console.log('Express started on port 5000');
 }
 ```
 
+    Note: the application source code is kept in its own repository: https://github.com/oliver----/nodejs_helloworld.
+
+
 ## More cookbooks
 
 For this configuration task there is a community cookbook available [application_nodejs](https://github.com/conradev/application_nodejs). So we add this to the list of external cookbooks.
@@ -182,11 +182,18 @@ cookbook 'application_nodejs',
 
 ## Custom Cookbook
 
+Create a new cookbook using
+
 ```
 knife cookbook create example1 -o site-cookbooks
 ```
 
-Edit `chef-repo/site-cookbooks/example1/recipes/default.rb`:
+As we use `librarian` personal cookbooks and external ones are kept in different folders.
+Thus we have to specify the option `-o site-cookbooks`
+
+### Edit the Recipe
+
+Open `chef-repo/site-cookbooks/example1/recipes/default.rb` and add the following block:
 
 ```
 application "hello-world" do
@@ -194,16 +201,20 @@ application "hello-world" do
   owner "www-data"
   group "www-data"
   packages ["git"]
-
-  # Note: in reality one would have a dedicated repository for the application which
-  # could be used like this
   repository "https://github.com/oliver----/nodejs_helloworld.git"
-
   nodejs do
     entry_point "app.js"
   end
 end
 ```
+
+`application` is a resource provided by the `application` cookbook (see `cookbooks/application/resource/default.rb`).
+Basically, this resource takes care of installing the source code and trigger actions whenever the repository
+has been changed.
+`nodejs` is a sub-resource provided by the cookbook `application_nodejs`. It installs nodejs and registers the
+application with `upstart`.
+
+### Extend the Run List
 
 Add the cookbook to the nodes run-list:
 
@@ -221,18 +232,20 @@ chef-repos/ $ knife node edit example1
   ...
 ```
 
-Update the client:
+### Update the client:
 
 ```
 nodejs-example/ $ vagrant provision
 ```
 
-Open in your browser: `http://192.168.50.10:3000/`
+### The Moment of Truth
+
+Open your browser: `http://192.168.50.10:3000/`
 
 You should see `Hello World`.
 
 
-## Persist Node Configuration
+## Node Configurations
 
 At this moment the node's configuration is only stored on the server.
 We definitely want to have this under version control.
