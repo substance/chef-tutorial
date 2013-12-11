@@ -3,3 +3,4 @@
 *.pem
 /chef-repo/cookbooks
 /chef-repo/tmp
+/chef-repo/site-cookbooks/local_application
