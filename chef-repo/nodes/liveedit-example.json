@@ -1,0 +1,13 @@
+{
+  "name": "liveedit-example",
+  "chef_environment": "_default",
+  "run_list": [
+    "recipe[apt]",
+    "recipe[liveedit-example]"
+  ],
+  "normal": {
+    "tags": [
+
+    ]
+  }
+}
