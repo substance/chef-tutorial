@@ -14,13 +14,12 @@ actions :deploy
 attribute :name, :kind_of => String, :name_attribute => true
 attribute :environment_name, :kind_of => String, :default => (node.chef_environment =~ /_default/ ? "production" : node.chef_environment)
 attribute :path, :kind_of => String
-attribute :shared_folder, :kind_of => String, :default => "/vagrant"
+attribute :source, :kind_of => String
 
 # for compatibility
 attribute :owner, :kind_of => String
 attribute :group, :kind_of => String
 
-attribute :application_provider
 attr_reader :sub_resources
 
 def release_path
@@ -29,11 +28,6 @@ end
 
 def shared_path
   path
-end
-
-def restart_command(arg=nil, &block)
-  arg ||= block
-  set_or_return(:restart_command, arg, :kind_of => [Proc, String])
 end
 
 # Support for sub-resources
