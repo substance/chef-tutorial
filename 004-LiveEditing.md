@@ -157,6 +157,50 @@ end
 
     Note: at this moment we can not yet make use of the `nodejs` sub-resource. We will address this next.
 
+Upload the cookbooks:
+
+```
+chef-repo $ knife cookbook upload --all
+```
+
+Initialize the Node configuration file:
+
+```
+chef-repo $ knife node show liveedit-example -Fj > nodes/liveedit-example.json
+```
+
+Open this file and edit the run list:
+
+```
+  "run_list": [
+    "recipe[apt]",
+    "recipe[liveedit-example]"
+  ]
+```
+
+Upload the Node configuration:
+
+```
+chef-repo $ knife node from file nodes/liveedit-example.json
+```
+
+Update the client:
+
+```
+liveedit-client $ vagrant provision
+```
+
+This should run without any errors.
+To check the success we need to log on to the client machine
+
+```
+liveedit-client $ vagrant ssh
+[liveedit-client] ~/ $ ls /var/www/nodejs/hello-world
+app.js package.json
+```
+You should sse the content of the folder `liveedit-client/hello-world`.
+
+
 ## Supporting Sub-Resoure types
 
 We want to be able to use the sub-resources as provided by `application_nodejs` or `application_ruby`.
@@ -178,7 +222,7 @@ end
 attr_reader :sub_resources
 ```
 
-Now we provide place to store references to sub-resources.
+We provided place to store references to sub-resources.
 
 
 ### Add this at the top of the file:
@@ -251,6 +295,8 @@ end
 
 ### Update
 
+Upload the cookbooks and provision the client.
+
 ```
 chef-repo $ knife cookbook upload --all
 ```
@@ -259,16 +305,7 @@ chef-repo $ knife cookbook upload --all
 liveedit-client $ vagrant provision
 ```
 
-This may take a while, but should run without any errors.
-To check the success we need to log on to the client machine
-
-```
-liveedit-client $ vagrant ssh
-[liveedit-client] ~/ $ ls /var/www/nodejs/hello-world
-app.js package.json
-```
-
-This should list the content of the folder `liveedit-client/hello-world`
+This should again run without errors. However, we are still not there.
 
 
 ## Connecting Sub-Resource Handlers
@@ -310,7 +347,7 @@ def run_restart
 end
 ```
 
-What we do here is to implement the deploy lifecycle in one method.
+We implemented the deploy lifecycle in one method, which is carried out by the `application` cookbook usually.
 
 ### Compatibility
 
@@ -331,9 +368,30 @@ def shared_path
 end
 ```
 
+### Update
+
+Upload the cookbooks and provision the client.
+
+```
+chef-repo $ knife cookbook upload --all
+```
+
+```
+liveedit-client $ vagrant provision
+```
+
+This should now take a while as nodejs is getting built.
+After that you should be able to see `Hello World!` when you browser (or curl) `192.168.50.30:3000`.
+
+```
+$ curl 192.168.50.30:3000
+Hello World!
+```
+
 ## Live Editing
 
-Now you can edit the application. However, our NodeJS application needs to be restarted to reflect file changes.
+Now you can edit the application source locally.
+However, our NodeJS application needs to be restarted to reflect file changes.
 There are two ways to do that.
 
 ```
@@ -358,6 +416,17 @@ end
 The Upstart service for a NodeJS application follows this pattern: `"#{application.name}_nodejs"`, which is in
 our case `hello-world_nodejs`.
 
-# Trouble Shooting
+# Summary
 
-TODO: please try out and give me feedback about troubles you had.
+We learned how to write a more sophisticated cookbook providing a resource type that
+may be used as a substitute for the `application` resource.
+Adopting vagrant's shared folder we can use a local application source folder instead of a a remote repository.
+
+Now we know how to implement the concept of a resource and a corresponding provider.
+In our implementation we can make use of built-in resources in the same way as it is done on a higher level.
+It is all plain Ruby code.
+
+# Troubleshooting
+
+I had no special problems myself.
+Please try out and give me feedback about the troubles you had.
