@@ -1,7 +1,6 @@
-
 action :deploy do
   #ensure that the parent directory exists
-  parent_directory = ::File.dirname(@new_resource.path)
+  parent_directory = ::File.dirname(new_resource.path)
   directory parent_directory do
     action :create
     recursive true
