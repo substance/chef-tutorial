@@ -22,10 +22,6 @@ SITE
       windows (>= 0.0.0)
       yum (>= 0.0.0)
     logrotate (1.4.0)
-    nodejs (1.3.0)
-      apt (>= 0.0.0)
-      build-essential (>= 0.0.0)
-      yum (>= 0.0.0)
     omnibus_updater (0.2.4)
     passenger_apache2 (2.1.2)
       apache2 (>= 1.0.4)
@@ -38,22 +34,11 @@ SITE
       chef_handler (>= 0.0.0)
     yum (2.4.4)
 
-GIT
-  remote: https://github.com/conradev/application_nodejs
-  ref: 2.0.0
-  sha: 66123ba602598f681ce583b883beadc86480a008
-  specs:
-    application_nodejs (2.0.0)
-      application (>= 0.0.0)
-      nodejs (>= 0.0.0)
-
 DEPENDENCIES
   application (= 3.0.0)
-  application_nodejs (>= 0)
   application_ruby (>= 0)
   apt (>= 0)
   curl (>= 0)
   git (>= 0)
-  nodejs (>= 0)
   omnibus_updater (>= 0)
 

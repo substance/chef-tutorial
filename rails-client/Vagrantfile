@@ -13,6 +13,7 @@ INSTALL_ARGS = CLIENT + ' ' + SERVER + ' ' + SERVER_IP
 
 $provision =<<PROVISION
 # TODO: this should be done smarter
+
 if [ ! -f /root/.is_configured ]; then
   echo "Registering hostname $1."
   hostname "$1"

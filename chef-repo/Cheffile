@@ -9,9 +9,4 @@ cookbook 'git'
 cookbook 'curl'
 cookbook 'application', '3.0.0'
 
-cookbook 'application_nodejs',
-  :git => 'https://github.com/conradev/application_nodejs',
-  :ref => '2.0.0'
-
-cookbook 'nodejs'
 cookbook 'application_ruby'
